@@ -14,8 +14,15 @@ def img2webp(path):
     """
     Takes a path of an image and converts it to webp
     """
+    print(path) 
     file, ext = os.path.splitext(path)
-    image = Image.open(path).convert("RGBA")
+    image = Image.open(path)
+    image = image.convert("RGBA")
+    r,g,b,a = image.split()
+    rgb_image = Image.merge("RGB", (r,g,b))
+    rgb_image = ImageOps.invert(rgb_image)
+    r2,g2,b2 = rgb_image.split()
+    image = Image.merge("RGBA", (r2,g2,b2,a))
     image = ImageOps.expand(image, 75)
     image.save(file + ".webp", "WEBP")
     os.remove(path)
